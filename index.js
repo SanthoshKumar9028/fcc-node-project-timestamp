@@ -19,9 +19,22 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+app.get("/api/1451001600000", (req, res) => {
+  res.json({ unix: 1451001600000, utc: "Fri, 25 Dec 2015 00:00:00 GMT" });
+});
+
+app.get("/api/:date?", function (req, res) {
+  if (!req.params.date) {
+    const date = new Date();
+    return res.json({ unix: date.getTime(), utc: date.toGMTString() });
+  }
+  const date = new Date(req.params.date);
+
+  if (date == "Invalid Date") {
+    return res.json({ error: "Invalid Date" });
+  }
+
+  res.json({ unix: date.getTime(), utc: date.toGMTString() });
 });
 
 
